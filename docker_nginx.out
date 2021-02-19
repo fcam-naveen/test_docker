@@ -1,0 +1,67 @@
+[naveen@centos7-eagle equinix]$ cat index.html 
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Customize Pizza</h1>
+<p>Varieties !!!</p>
+
+</body>
+</html>
+
+
+Dockerfile:
+============
+FROM nginx
+COPY index.html /usr/share/nginx/html
+
+
+Build:
+========
+[naveen@centos7-eagle equinix]$ docker build -t basic-nginx .
+Sending build context to Docker daemon  6.656kB
+Step 1/2 : FROM nginx
+latest: Pulling from library/nginx
+45b42c59be33: Pull complete 
+8acc495f1d91: Pull complete 
+ec3bd7de90d7: Pull complete 
+19e2441aeeab: Pull complete 
+f5a38c5f8d4e: Pull complete 
+83500d851118: Pull complete 
+Digest: sha256:f3693fe50d5b1df1ecd315d54813a77afd56b0245a404055a946574deb6b34fc
+Status: Downloaded newer image for nginx:latest
+ ---> 35c43ace9216
+ Step 2/2 : COPY index.html /usr/share/nginx/html
+  ---> 73e366e6dda1
+  Successfully built 73e366e6dda1
+  Successfully tagged basic-nginx:latest
+
+Image:
+======
+[naveen@centos7-eagle equinix]$ docker images | grep nginx
+nginx                                           latest            35c43ace9216   Less than a second ago   133MB
+basic-nginx                                     latest            73e366e6dda1   15 seconds ago           133MB
+
+
+Run:
+======
+docker run --name pizza-nginx -d -p 8080:80 basic-nginx
+
+Test:
+========
+Port mapping:
+[naveen@centos7-eagle equinix]$ docker port pizza-nginx
+80/tcp -> 0.0.0.0:8080
+
+[naveen@centos7-eagle equinix]$ curl localhost:8080
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Customize Pizza</h1>
+<p>Varieties !!!</p>
+
+</body>
+</html>
+
+
